@@ -1,0 +1,6 @@
+
+*.pyc
+ComicInfo.xml
+openapi.yaml
+annapi.py
+apitest.py
