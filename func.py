@@ -1,7 +1,6 @@
 from patoolib import extract_archive
 from PIL import Image 
-import zipfile, os, fitz, io, shutil, os
-
+import zipfile, os, fitz, io, shutil, os, sys
 
 # create_cbz(source_folder, output_folder, cbz_filename)
 def create_cbz(source_folder, output_folder, cbz_filename):
@@ -17,7 +16,6 @@ def create_cbz(source_folder, output_folder, cbz_filename):
 # source_folder = 'path/to/your/source/folder'
 # output_folder = 'path/to/your/output'
 # cbz_filename = 'output_file'
-
 
 # pdf_conv(source_file)
 def pdf_conv(source_file, output_folder):
@@ -48,6 +46,7 @@ def cbr_ex(source_file, output_folder):
 # source_folder = 'path/to/your/source/cbr'
 # output_folder = 'path/to/your/output'
 
+# Create temp folder, check if one exists
 def create_temp():
     if os.path.isdir('temp'):
         shutil.rmtree('temp/')
@@ -55,13 +54,19 @@ def create_temp():
     
 def delete_temp():
     shutil.rmtree('temp/')
-    
+
+# Check os and select clear
 def clear():
     if os.name == 'nt':
         _ = os.system('cls')
     else:
         _ = os.system('clear')
 
+# New pause text
 def pause():
-    print("Press any key to return to menu")
-    os.system('pause > nul')
+    os.system('pause')
+
+def delete_last_line(num):
+    for n in range(num):
+        sys.stdout.write('\x1b[1A')
+        sys.stdout.write('\x1b[2K')

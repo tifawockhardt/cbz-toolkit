@@ -1,10 +1,14 @@
-from PIL import Image
 from pathlib import Path
-from func import create_cbz
-import shutil, os
+from func import *
+import os
 
-src = Path(input('Please insert file: ').strip('& ').strip("'"))
-file_name = src.stem
+src = Path(input('Please insert path: ').strip('& ').strip("'"))
+while (str(src) == '.'):
+    src = Path(input('Please insert path: ').strip('& ').strip("'"))
+
+file_name = src
 output = 'output/'
 
 create_cbz(src, 'output/', src.stem)
+print("File has been created.")
+pause()

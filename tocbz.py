@@ -2,9 +2,13 @@ from pathlib import Path
 import os
 from func import *
 
-src = Path(input('Please insert file: ').strip('& ').strip("'"))
-
+src = Path(input('Please insert .cbz: ').strip('& ').strip("'"))
+while (str(src) == '.') or (os.path.splitext(src)[1] != '.cbz'):
+    src = Path(input('Please insert .cbz: ').strip('& ').strip("'"))
+    
 file_name, file_ext = os.path.splitext(src)
+
+create_temp()
 
 match file_ext:
     case '.pdf':
@@ -22,4 +26,5 @@ match file_ext:
 if os.path.isfile(src):
     delete_temp()
     
-print('File has been converted to cbz.')
+print('File has been converted.')
+pause()

@@ -1,12 +1,12 @@
 from pathlib import Path
 from PIL import Image
-import os, io, fitz, shutil, patoolib, zipfile, sys
 from func import *
+import os, zipfile, inquirer
 
+src = Path(input('Please insert .cbz: ').strip('& ').strip("'"))
+while (str(src) == '.') or (os.path.splitext(src)[1] != '.cbz'):
+    src = Path(input('Please insert .cbz: ').strip('& ').strip("'"))
 
-# filepath = Path('temp/One-Punch Man - c122 (v25) - p102 [VIZ Media] [Digital] [1r0n].png')
-
-src = Path(input('Please insert file: ').strip('& ').strip("'"))
 file_name = src.stem
 
 create_temp()
@@ -14,7 +14,17 @@ create_temp()
 with zipfile.ZipFile(src, 'r') as zip_ref:
     zip_ref.extractall('temp/')
 
-resize_width = 1600
+questions = [
+    inquirer.List(
+        "options",
+        message="Desired page width",
+        choices=["1200", "1600"],
+    ),
+]
+
+answers = inquirer.prompt(questions)
+
+resize_width = answers["options"]
 
 def get_ratio():
     h, w = image.size
@@ -26,6 +36,7 @@ def get_ratio():
     h_new = round(h * resize_ratio)
     return h_new
 
+# Process Images
 for i in os.listdir('temp/'):
     if i.endswith('.png') or i.endswith('.jpg'): 
         image = Image.open(f"temp/{i}")
@@ -34,7 +45,6 @@ for i in os.listdir('temp/'):
         print(f'{i} proccessed')
         
 create_cbz('temp/', 'output/', src.stem)
-
-# Delete temp
-if os.path.isfile(src):
-    delete_temp()
+delete_temp()
+print('Rescale has finished.')
+pause()

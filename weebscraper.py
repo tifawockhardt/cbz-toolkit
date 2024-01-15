@@ -1,46 +1,51 @@
 from func import *
 from art import *
-import os, sys, inquirer
+import os, inquirer
 
 # TODO: 
 # Clean up a million things
 # Batch
-# Fix find similar
 # Fix redundant func input
-# Fix tempfile in tocbz
-# Print "markers" task done,etc
-# Fix Resize names
 # Phase out Path for os
 
-modules = {"Create CBZ": "createcbz", "Convert to CBZ": "tocbz", "Add Metadata": "addmetadata", "Downscale CBZ": "resizecomp", "Quit": "quit"}
+modules = {"Create": "createcbz", "Convertor": "tocbz", "Add Metadata": "addmetadata", "Downscaler": "resizecomp", "Quit": "quit"}
+# , "Renamer": "renamer"
 
-# sys.path.append(os.path.realpath("."))
 while True: 
     clear()
-    
-    Art=text2art("cbztoolkit") # random font mode
-    print(Art)
+    if os.path.isdir('temp'):
+        shutil.rmtree('temp/')
+        
+    print(text2art("cbztoolkit"))
     
     questions = [
         inquirer.List(
             "options",
             message="Options",
-            choices=["Create CBZ", "Convert to CBZ", "Add Metadata", "Downscale CBZ", "Quit"],
+            choices=["Create", "Convertor", "Metadata", "Downscaler", "Quit"],
         ),
     ]
+    # "Renamer",
+    
+    print('by tifawockhardt\n')
 
     answers = inquirer.prompt(questions)
     
+    clear()
+    
     match modules[answers["options"]]: 
-        case 'createcbz': import test
+        case 'createcbz': import createcbz
             
         case 'tocbz': import tocbz
             
-        case 'addmetadata': import addmetadata
+        case 'Metadata': import addmetadata
             
         case 'resizecomp': import resizecomp
+        
+        # case 'renamer': import renamer
         
         case 'quit':
             clear()
             quit()
+    
     pause()

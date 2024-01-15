@@ -1,11 +1,16 @@
 from jikanpy import Jikan
 from pathlib import Path
+from func import *
 import xml.etree.ElementTree as ET
 import zipfile, re, xml.dom.minidom, os
 
 # Handle file
 
-src = Path(input('Please insert file: ').strip('& ').strip("'"))
+print("As MAL does not allow for search term relevancy in their API, please make sure the titles are exact.\n")
+
+src = Path(input('Please insert .cbz: ').strip('& ').strip("'"))
+while (str(src) == '.') or (os.path.splitext(src)[1] != '.cbz'):
+    src = Path(input('Please insert .cbz: ').strip('& ').strip("'"))
 
 fileName = src.stem
 mangaTitle = fileName.split('(')
@@ -19,16 +24,13 @@ else: # One-Shot
 
 # API
 jikan = Jikan()
-
 output = jikan.search(
     'manga', searchTerm
 )
 
+# Parse results
 output = output['data'][0]
-
 manga_title = output['titles'][0]['title']
-
-# Check if finished
 onGoingSeries = output['volumes']
 if onGoingSeries == "null":
     latestVolume = "None"
@@ -37,7 +39,6 @@ else:
     latestVolume = onGoingSeries
 
 print("Collecting metadata...")
-
 metadata = {
     'Series': str(manga_title),
     'Count': str(latestVolume),
@@ -55,11 +56,8 @@ metadata = {
 
 # Write to XML
 print("Writing ComicInfo.xml...")
-
 data = ET.Element('ComicInfo')
-
 xmlElements = len(metadata)
-    
 for i in range(xmlElements):
     globals()[f'x{i}'] = i
     
@@ -69,17 +67,16 @@ for i in range(xmlElements):
     break
 
 et = ET.ElementTree(data)
-
 b_xml = ET.tostring(data)
-
 temp = xml.dom.minidom.parseString(b_xml)
 pretty = temp.toprettyxml(encoding = 'UTF-8', indent = "  ")
 
+print("Saving ComicInfo.xml...")
 with open("ComicInfo.xml", "wb") as f:
     f.write(pretty)
-
 with zipfile.ZipFile(src, 'a') as zipf:
     source_path = 'ComicInfo.xml'
     zipf.write(source_path)
 
 print(f"Metadata has been added to {src.stem}.")
+pause()
