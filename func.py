@@ -1,6 +1,6 @@
 from patoolib import extract_archive
 from PIL import Image 
-import zipfile, os, fitz, io, shutil
+import zipfile, os, fitz, io, shutil, os
 
 
 # create_cbz(source_folder, output_folder, cbz_filename)
@@ -20,7 +20,7 @@ def create_cbz(source_folder, output_folder, cbz_filename):
 
 
 # pdf_conv(source_file)
-def pdf_conv(source_file):
+def pdf_conv(source_file, output_folder):
     pdf_file = fitz.open(source_file)
     total_pages = len(pdf_file)
 
@@ -39,7 +39,7 @@ def pdf_conv(source_file):
             image_bytes = base_image["image"] 
             image_ext = base_image["ext"]
             image = Image.open(io.BytesIO(image_bytes))
-            image.save(open(f"temp/image_p{format(page_index, '03d')}.{image_ext}", "wb"))
+            image.save(open(f"{output_folder}image_p{format(page_index, '03d')}.{image_ext}", "wb"))
 # source_file = 'path/to/your/source/pdf'
 
 # cbr_ex(source_file, output_folder)
@@ -55,3 +55,13 @@ def create_temp():
     
 def delete_temp():
     shutil.rmtree('temp/')
+    
+def clear():
+    if os.name == 'nt':
+        _ = os.system('cls')
+    else:
+        _ = os.system('clear')
+
+def pause():
+    print("Press any key to return to menu")
+    os.system('pause > nul')

@@ -83,6 +83,3 @@ with zipfile.ZipFile(src, 'a') as zipf:
     zipf.write(source_path)
 
 print(f"Metadata has been added to {src.stem}.")
-
-
-os.system('pause')
