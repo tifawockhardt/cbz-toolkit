@@ -5,7 +5,6 @@ import os, inquirer
 # TODO: 
 # Clean up a million things
 # Batch
-# Fix redundant func input
 # Phase out Path for os
 
 modules = {"Create": "createcbz", "Convertor": "tocbz", "Add Metadata": "addmetadata", "Downscaler": "resizecomp", "Quit": "quit"}
