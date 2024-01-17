@@ -6,3 +6,4 @@
  Roadmap: 
  Batch operations
  Cleaner code, etc.
+ Renamer tool
